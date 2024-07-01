@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<8cb9343bf5aa9a7ec1940720ce253c5b>>
+ * @generated SignedSource<<34bbd584a612fa88cc6adf2d2bc51b92>>
  */
 
 /**
@@ -45,6 +45,8 @@ public open class ReactNativeFeatureFlagsDefaults : ReactNativeFeatureFlagsProvi
 
   override fun enableUIConsistency(): Boolean = false
 
+  override fun fixMappingOfEventPrioritiesBetweenFabricAndReact(): Boolean = false
+
   override fun fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak(): Boolean = false
 
   override fun forceBatchingMountItemsOnAndroid(): Boolean = false
@@ -58,6 +60,8 @@ public open class ReactNativeFeatureFlagsDefaults : ReactNativeFeatureFlagsProvi
   override fun preventDoubleTextMeasure(): Boolean = true
 
   override fun setAndroidLayoutDirection(): Boolean = false
+
+  override fun useImmediateExecutorInAndroidBridgeless(): Boolean = false
 
   override fun useModernRuntimeScheduler(): Boolean = false
 

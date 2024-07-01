@@ -58,6 +58,11 @@ export interface MixedTypeAnnotation {
   readonly type: 'MixedTypeAnnotation';
 }
 
+export interface EventEmitterTypeAnnotation {
+  readonly type: 'EventEmitterTypeAnnotation';
+  readonly typeAnnotation: NativeModuleEventEmitterTypeAnnotation;
+}
+
 export interface FunctionTypeAnnotation<P, R> {
   readonly type: 'FunctionTypeAnnotation';
   readonly params: readonly NamedShape<P>[];
@@ -241,12 +246,15 @@ export interface NativeModuleSchema {
 }
 
 export interface NativeModuleSpec {
-  readonly properties: readonly NativeModulePropertyShape[];
+  readonly eventEmitters: readonly NativeModuleEventEmitterShape[];
+  readonly methods: readonly NativeModulePropertyShape[];
 }
 
 export type NativeModulePropertyShape = NamedShape<
   Nullable<NativeModuleFunctionTypeAnnotation>
 >;
+
+export type NativeModuleEventEmitterShape = NamedShape<EventEmitterTypeAnnotation>;
 
 export interface NativeModuleEnumMap {
   readonly [enumName: string]: NativeModuleEnumDeclarationWithMembers;
@@ -352,6 +360,23 @@ export interface NativeModuleMixedTypeAnnotation {
   readonly type: 'MixedTypeAnnotation';
 }
 
+export type NativeModuleEventEmitterBaseTypeAnnotation =
+  | NativeModuleBooleanTypeAnnotation
+  | NativeModuleDoubleTypeAnnotation
+  | NativeModuleFloatTypeAnnotation
+  | NativeModuleInt32TypeAnnotation
+  | NativeModuleNumberTypeAnnotation
+  | NativeModuleStringTypeAnnotation
+  | NativeModuleTypeAliasTypeAnnotation
+  | VoidTypeAnnotation;
+
+export type NativeModuleEventEmitterTypeAnnotation =
+  | NativeModuleEventEmitterBaseTypeAnnotation
+  | {
+    readonly type: 'ArrayTypeAnnotation';
+    readonly elementType: NativeModuleEventEmitterBaseTypeAnnotation | {type: string};
+  };
+
 export type NativeModuleBaseTypeAnnotation =
   | NativeModuleStringTypeAnnotation
   | NativeModuleNumberTypeAnnotation
@@ -379,7 +404,8 @@ export type NativeModuleReturnTypeAnnotation =
 export type NativeModuleTypeAnnotation =
   | NativeModuleBaseTypeAnnotation
   | NativeModuleParamOnlyTypeAnnotation
-  | NativeModuleReturnOnlyTypeAnnotation;
+  | NativeModuleReturnOnlyTypeAnnotation
+  | NativeModuleEventEmitterTypeAnnotation;
 
 type NativeModuleParamOnlyTypeAnnotation = NativeModuleFunctionTypeAnnotation;
 

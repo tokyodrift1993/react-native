@@ -38,18 +38,17 @@ runs:
     - name: Run yarn
       shell: bash
       run: yarn install --non-interactive
-    - name: Cache setup
-      id: cache_setup
-      uses: ./.github/actions/cache_setup
+    - name: Download Hermes
+      uses: actions/download-artifact@v4
       with:
-        hermes-version: ${{ inputs.hermes-version }}
-        react-native-version: ${{ inputs.react-native-version }}
+        name: hermes-darwin-bin-${{ inputs.flavor }}
+        path: ${{ inputs.hermes-tarball-artifacts-dir }}
     - name: Setup ruby
       uses: ruby/setup-ruby@v1.170.0
       with:
         ruby-version: ${{ inputs.ruby-version }}
     - name: Prepare IOS Tests
-      if: ${{ inputs.run-unit-tests == true }}
+      if: ${{ inputs.run-unit-tests == 'true' }}
       uses: ./.github/actions/prepare_ios_tests
     - name: Set HERMES_ENGINE_TARBALL_PATH envvar if Hermes tarball is present
       shell: bash
@@ -57,11 +56,6 @@ runs:
         HERMES_TARBALL_ARTIFACTS_DIR=${{ inputs.hermes-tarball-artifacts-dir }}
         if [ ! -d $HERMES_TARBALL_ARTIFACTS_DIR ]; then
           echo "Hermes tarball artifacts dir not present ($HERMES_TARBALL_ARTIFACTS_DIR). Build Hermes from source."
-          exit 0
-        fi
-
-        if [ ! -d ~/react-native ]; then
-          echo "No React Native checkout found. Run `checkout` first."
           exit 0
         fi
 
@@ -87,6 +81,7 @@ runs:
         if [[ -e $TARBALL_PATH ]]; then
           tar -xf $TARBALL_PATH
           echo 'print(HermesInternal?.getRuntimeProperties?.()["OSS Release Version"])' > test.js
+          chmod +x ./destroot/bin/hermes
           ./destroot/bin/hermes test.js
           rm test.js
           rm -rf destroot
@@ -102,6 +97,8 @@ runs:
       run: |
         if [[ ${{ inputs.jsengine }} == "JSC" ]]; then
           export USE_HERMES=0
+        else
+          export HERMES_ENGINE_TARBALL_PATH=$HERMES_ENGINE_TARBALL_PATH
         fi
 
         if [[ ${{ inputs.use-frameworks }} == "DynamicFrameworks" ]]; then
@@ -117,7 +114,7 @@ runs:
         bundle install
         bundle exec pod install
     - name: Build RNTester
-      if: ${{ inputs.run-unit-tests != true }}
+      if: ${{ inputs.run-unit-tests != 'true' }}
       shell: bash
       run: |
         xcodebuild build \
@@ -125,11 +122,11 @@ runs:
           -scheme RNTester \
           -sdk iphonesimulator
     - name: "Run Tests: iOS Unit and Integration Tests"
-      if: ${{ inputs.run-unit-tests == true }}
+      if: ${{ inputs.run-unit-tests == 'true' }}
       shell: bash
       run: yarn test-ios
     - name: Zip Derived data folder
-      if: ${{ inputs.run-unit-tests == true }}
+      if: ${{ inputs.run-unit-tests == 'true' }}
       shell: bash
       run: |
         echo "zipping tests results"
@@ -138,17 +135,17 @@ runs:
         tar -zcvf xcresults.tar.gz $XCRESULT_PATH
     - name: Upload artifact
       uses: actions/upload-artifact@v2.2.4
-      if: ${{ inputs.run-unit-tests == true }}
+      if: ${{ inputs.run-unit-tests == 'true' }}
       with:
         name: xcresults
         path: /Users/distiller/Library/Developer/Xcode/xcresults.tar.gz
     - name: Report bundle size
-      if: ${{ inputs.run-unit-tests == true }}
+      if: ${{ inputs.run-unit-tests == 'true' }}
       uses: ./.github/actions/report_bundle_size
       with:
         platform: ios
     - name: Store test results
-      if: ${{ inputs.run-unit-tests == true }}
+      if: ${{ inputs.run-unit-tests == 'true' }}
       uses: actions/upload-artifact@v2.2.4
       with:
         name: test-results

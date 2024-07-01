@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<c3b421b10f05f33a9830fbd730a3786a>>
+ * @generated SignedSource<<522f11a571457cb932f451cf81bd384a>>
  * @flow strict-local
  */
 
@@ -32,6 +32,7 @@ export type ReactNativeFeatureFlagsJsOnly = {
   enableAccessToHostTreeInFabric: Getter<boolean>,
   isLayoutAnimationEnabled: Getter<boolean>,
   shouldUseAnimatedObjectForTransform: Getter<boolean>,
+  shouldUseOptimizedText: Getter<boolean>,
   shouldUseRemoveClippedSubviewsAsDefaultOnIOS: Getter<boolean>,
   shouldUseSetNativePropsInFabric: Getter<boolean>,
 };
@@ -51,6 +52,7 @@ export type ReactNativeFeatureFlags = {
   enableMicrotasks: Getter<boolean>,
   enableSynchronousStateUpdates: Getter<boolean>,
   enableUIConsistency: Getter<boolean>,
+  fixMappingOfEventPrioritiesBetweenFabricAndReact: Getter<boolean>,
   fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak: Getter<boolean>,
   forceBatchingMountItemsOnAndroid: Getter<boolean>,
   fuseboxEnabledDebug: Getter<boolean>,
@@ -58,6 +60,7 @@ export type ReactNativeFeatureFlags = {
   lazyAnimationCallbacks: Getter<boolean>,
   preventDoubleTextMeasure: Getter<boolean>,
   setAndroidLayoutDirection: Getter<boolean>,
+  useImmediateExecutorInAndroidBridgeless: Getter<boolean>,
   useModernRuntimeScheduler: Getter<boolean>,
   useNativeViewConfigsInBridgelessMode: Getter<boolean>,
   useRuntimeShadowNodeReferenceUpdate: Getter<boolean>,
@@ -94,6 +97,11 @@ export const isLayoutAnimationEnabled: Getter<boolean> = createJavaScriptFlagGet
  * Enables use of AnimatedObject for animating transform values.
  */
 export const shouldUseAnimatedObjectForTransform: Getter<boolean> = createJavaScriptFlagGetter('shouldUseAnimatedObjectForTransform', false);
+
+/**
+ * Use optimized version of <Text /> component.
+ */
+export const shouldUseOptimizedText: Getter<boolean> = createJavaScriptFlagGetter('shouldUseOptimizedText', false);
 
 /**
  * removeClippedSubviews prop will be used as the default in FlatList on iOS to match Android
@@ -150,6 +158,10 @@ export const enableSynchronousStateUpdates: Getter<boolean> = createNativeFlagGe
  */
 export const enableUIConsistency: Getter<boolean> = createNativeFlagGetter('enableUIConsistency', false);
 /**
+ * Uses the default event priority instead of the discreet event priority by default when dispatching events from Fabric to React.
+ */
+export const fixMappingOfEventPrioritiesBetweenFabricAndReact: Getter<boolean> = createNativeFlagGetter('fixMappingOfEventPrioritiesBetweenFabricAndReact', false);
+/**
  * Fixes a leak in SurfaceMountingManager.mRemoveDeleteTreeUIFrameCallback
  */
 export const fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak: Getter<boolean> = createNativeFlagGetter('fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak', false);
@@ -177,6 +189,10 @@ export const preventDoubleTextMeasure: Getter<boolean> = createNativeFlagGetter(
  * Propagate layout direction to Android views.
  */
 export const setAndroidLayoutDirection: Getter<boolean> = createNativeFlagGetter('setAndroidLayoutDirection', false);
+/**
+ * Invoke callbacks immediately on the ReactInstance rather than going through a background thread for synchronization
+ */
+export const useImmediateExecutorInAndroidBridgeless: Getter<boolean> = createNativeFlagGetter('useImmediateExecutorInAndroidBridgeless', false);
 /**
  * When enabled, it uses the modern fork of RuntimeScheduler that allows scheduling tasks with priorities from any thread.
  */

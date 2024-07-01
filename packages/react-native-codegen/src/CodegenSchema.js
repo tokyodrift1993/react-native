@@ -61,6 +61,11 @@ export type MixedTypeAnnotation = $ReadOnly<{
   type: 'MixedTypeAnnotation',
 }>;
 
+type EventEmitterTypeAnnotation = $ReadOnly<{
+  type: 'EventEmitterTypeAnnotation',
+  typeAnnotation: NativeModuleEventEmitterTypeAnnotation | $FlowFixMe,
+}>;
+
 type FunctionTypeAnnotation<+P, +R> = $ReadOnly<{
   type: 'FunctionTypeAnnotation',
   params: $ReadOnlyArray<NamedShape<P>>,
@@ -242,8 +247,12 @@ export type NativeModuleSchema = $ReadOnly<{
 }>;
 
 type NativeModuleSpec = $ReadOnly<{
-  properties: $ReadOnlyArray<NativeModulePropertyShape>,
+  eventEmitters: $ReadOnlyArray<NativeModuleEventEmitterShape>,
+  methods: $ReadOnlyArray<NativeModulePropertyShape>,
 }>;
+
+export type NativeModuleEventEmitterShape =
+  NamedShape<EventEmitterTypeAnnotation>;
 
 export type NativeModulePropertyShape = NamedShape<
   Nullable<NativeModuleFunctionTypeAnnotation>,
@@ -357,6 +366,23 @@ export type NativeModuleMixedTypeAnnotation = $ReadOnly<{
   type: 'MixedTypeAnnotation',
 }>;
 
+type NativeModuleEventEmitterBaseTypeAnnotation =
+  | NativeModuleBooleanTypeAnnotation
+  | NativeModuleDoubleTypeAnnotation
+  | NativeModuleFloatTypeAnnotation
+  | NativeModuleInt32TypeAnnotation
+  | NativeModuleNumberTypeAnnotation
+  | NativeModuleStringTypeAnnotation
+  | NativeModuleTypeAliasTypeAnnotation
+  | VoidTypeAnnotation;
+
+export type NativeModuleEventEmitterTypeAnnotation =
+  | NativeModuleEventEmitterBaseTypeAnnotation
+  | {
+      type: 'ArrayTypeAnnotation',
+      elementType: NativeModuleEventEmitterBaseTypeAnnotation | {type: string},
+    };
+
 export type NativeModuleBaseTypeAnnotation =
   | NativeModuleStringTypeAnnotation
   | NativeModuleNumberTypeAnnotation
@@ -384,7 +410,8 @@ export type NativeModuleReturnTypeAnnotation =
 export type NativeModuleTypeAnnotation =
   | NativeModuleBaseTypeAnnotation
   | NativeModuleParamOnlyTypeAnnotation
-  | NativeModuleReturnOnlyTypeAnnotation;
+  | NativeModuleReturnOnlyTypeAnnotation
+  | NativeModuleEventEmitterTypeAnnotation;
 
 type NativeModuleParamOnlyTypeAnnotation = NativeModuleFunctionTypeAnnotation;
 

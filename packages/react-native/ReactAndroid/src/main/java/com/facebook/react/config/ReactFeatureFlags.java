@@ -66,17 +66,11 @@ public class ReactFeatureFlags {
    */
   public static boolean enableBridgelessArchitecture = false;
 
-  /** Does the bridgeless architecture use the new create/reload/destroy routines */
-  public static volatile boolean enableBridgelessArchitectureNewCreateReloadDestroy = true;
-
   /** This feature flag enables logs for Fabric */
   public static boolean enableFabricLogs = false;
 
   /** Feature flag to configure eager attachment of the root view/initialisation of the JS code */
   public static boolean enableEagerRootViewAttachment = false;
-
-  /** Enables or disables calculation of Transformed Frames */
-  public static boolean calculateTransformedFramesEnabled = false;
 
   public static boolean dispatchPointerEvents = false;
 

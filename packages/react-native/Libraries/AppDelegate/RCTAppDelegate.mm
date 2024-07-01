@@ -55,7 +55,6 @@
   if (self.newArchEnabled || self.fabricEnabled) {
     [RCTComponentViewFactory currentComponentViewFactory].thirdPartyFabricComponentsProvider = self;
   }
-  [self customizeRootView:(RCTRootView *)rootView];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [self createRootViewController];
@@ -150,6 +149,11 @@
 - (BOOL)bridgelessEnabled
 {
   return [self newArchEnabled];
+}
+
+- (BOOL)unstable_fuseboxEnabled
+{
+  return NO;
 }
 
 - (NSURL *)bundleURL
@@ -253,6 +257,10 @@
     return [weakSelf createBridgeWithDelegate:delegate launchOptions:launchOptions];
   };
 
+  configuration.customizeRootView = ^(UIView *_Nonnull rootView) {
+    [weakSelf customizeRootView:(RCTRootView *)rootView];
+  };
+
   configuration.sourceURLForBridge = ^NSURL *_Nullable(RCTBridge *_Nonnull bridge)
   {
     return [weakSelf sourceURLForBridge:bridge];
@@ -297,8 +305,26 @@
 
 #pragma mark - Feature Flags
 
-class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNativeFeatureFlagsDefaults {
+class RCTAppDelegateFeatureFlags : public facebook::react::ReactNativeFeatureFlagsDefaults {
  public:
+  RCTAppDelegateFeatureFlags(bool fuseboxEnabled)
+  {
+    fuseboxEnabled_ = fuseboxEnabled;
+  }
+
+  bool fuseboxEnabledDebug() override
+  {
+    return fuseboxEnabled_;
+  }
+
+ private:
+  bool fuseboxEnabled_;
+};
+
+class RCTAppDelegateBridgelessFeatureFlags : public RCTAppDelegateFeatureFlags {
+ public:
+  RCTAppDelegateBridgelessFeatureFlags(bool fuseboxEnabled) : RCTAppDelegateFeatureFlags(fuseboxEnabled) {}
+
   bool useModernRuntimeScheduler() override
   {
     return true;
@@ -316,7 +342,11 @@ class RCTAppDelegateBridgelessFeatureFlags : public facebook::react::ReactNative
 - (void)_setUpFeatureFlags
 {
   if ([self bridgelessEnabled]) {
-    facebook::react::ReactNativeFeatureFlags::override(std::make_unique<RCTAppDelegateBridgelessFeatureFlags>());
+    facebook::react::ReactNativeFeatureFlags::override(
+        std::make_unique<RCTAppDelegateBridgelessFeatureFlags>([self unstable_fuseboxEnabled]));
+  } else {
+    facebook::react::ReactNativeFeatureFlags::override(
+        std::make_unique<RCTAppDelegateFeatureFlags>([self unstable_fuseboxEnabled]));
   }
 }
 

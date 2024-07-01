@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<bc03d88b59af436b2db4f9048184a881>>
+ * @generated SignedSource<<9a33a6bc10cdb2b0f9fcb15805a06982>>
  */
 
 /**
@@ -95,6 +95,12 @@ public object ReactNativeFeatureFlags {
   public fun enableUIConsistency(): Boolean = accessor.enableUIConsistency()
 
   /**
+   * Uses the default event priority instead of the discreet event priority by default when dispatching events from Fabric to React.
+   */
+  @JvmStatic
+  public fun fixMappingOfEventPrioritiesBetweenFabricAndReact(): Boolean = accessor.fixMappingOfEventPrioritiesBetweenFabricAndReact()
+
+  /**
    * Fixes a leak in SurfaceMountingManager.mRemoveDeleteTreeUIFrameCallback
    */
   @JvmStatic
@@ -135,6 +141,12 @@ public object ReactNativeFeatureFlags {
    */
   @JvmStatic
   public fun setAndroidLayoutDirection(): Boolean = accessor.setAndroidLayoutDirection()
+
+  /**
+   * Invoke callbacks immediately on the ReactInstance rather than going through a background thread for synchronization
+   */
+  @JvmStatic
+  public fun useImmediateExecutorInAndroidBridgeless(): Boolean = accessor.useImmediateExecutorInAndroidBridgeless()
 
   /**
    * When enabled, it uses the modern fork of RuntimeScheduler that allows scheduling tasks with priorities from any thread.

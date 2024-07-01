@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<914fa03d71af61b82f05f005d3f3973d>>
+ * @generated SignedSource<<82399968da4f450b87c908031466a38a>>
  */
 
 /**
@@ -92,6 +92,11 @@ bool NativeReactNativeFeatureFlags::enableUIConsistency(
   return ReactNativeFeatureFlags::enableUIConsistency();
 }
 
+bool NativeReactNativeFeatureFlags::fixMappingOfEventPrioritiesBetweenFabricAndReact(
+    jsi::Runtime& /*runtime*/) {
+  return ReactNativeFeatureFlags::fixMappingOfEventPrioritiesBetweenFabricAndReact();
+}
+
 bool NativeReactNativeFeatureFlags::fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak(
     jsi::Runtime& /*runtime*/) {
   return ReactNativeFeatureFlags::fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak();
@@ -125,6 +130,11 @@ bool NativeReactNativeFeatureFlags::preventDoubleTextMeasure(
 bool NativeReactNativeFeatureFlags::setAndroidLayoutDirection(
     jsi::Runtime& /*runtime*/) {
   return ReactNativeFeatureFlags::setAndroidLayoutDirection();
+}
+
+bool NativeReactNativeFeatureFlags::useImmediateExecutorInAndroidBridgeless(
+    jsi::Runtime& /*runtime*/) {
+  return ReactNativeFeatureFlags::useImmediateExecutorInAndroidBridgeless();
 }
 
 bool NativeReactNativeFeatureFlags::useModernRuntimeScheduler(

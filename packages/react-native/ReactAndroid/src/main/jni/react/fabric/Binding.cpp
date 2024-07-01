@@ -396,10 +396,6 @@ void Binding::installFabricUIManager(
   // Keep reference to config object and cache some feature flags here
   reactNativeConfig_ = config;
 
-  contextContainer->insert(
-      "CalculateTransformedFramesEnabled",
-      getFeatureFlagValue("calculateTransformedFramesEnabled"));
-
   CoreFeatures::enablePropIteratorSetter =
       getFeatureFlagValue("enableCppPropsIteratorSetter");
   CoreFeatures::excludeYogaFromRawProps =
@@ -513,10 +509,6 @@ void Binding::schedulerShouldRenderTransactions(
 
 void Binding::schedulerDidRequestPreliminaryViewAllocation(
     const ShadowNode& shadowNode) {
-  if (!shadowNode.getTraits().check(ShadowNodeTraits::Trait::FormsView)) {
-    return;
-  }
-
   auto mountingManager = getMountingManager("preallocateView");
   if (!mountingManager) {
     return;

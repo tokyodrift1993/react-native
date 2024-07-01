@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<b7969efd5890b7be7be5fd8e6b0bf301>>
+ * @generated SignedSource<<dd5872a21f84a41bea247e137541ddfc>>
  */
 
 /**
@@ -65,6 +65,10 @@ bool ReactNativeFeatureFlags::enableUIConsistency() {
   return getAccessor().enableUIConsistency();
 }
 
+bool ReactNativeFeatureFlags::fixMappingOfEventPrioritiesBetweenFabricAndReact() {
+  return getAccessor().fixMappingOfEventPrioritiesBetweenFabricAndReact();
+}
+
 bool ReactNativeFeatureFlags::fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak() {
   return getAccessor().fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak();
 }
@@ -91,6 +95,10 @@ bool ReactNativeFeatureFlags::preventDoubleTextMeasure() {
 
 bool ReactNativeFeatureFlags::setAndroidLayoutDirection() {
   return getAccessor().setAndroidLayoutDirection();
+}
+
+bool ReactNativeFeatureFlags::useImmediateExecutorInAndroidBridgeless() {
+  return getAccessor().useImmediateExecutorInAndroidBridgeless();
 }
 
 bool ReactNativeFeatureFlags::useModernRuntimeScheduler() {

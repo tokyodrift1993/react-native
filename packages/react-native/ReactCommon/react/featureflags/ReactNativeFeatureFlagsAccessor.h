@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<8837dd1578561f205e6f682afd98c450>>
+ * @generated SignedSource<<45258896e458cce165b403e043356eb9>>
  */
 
 /**
@@ -42,6 +42,7 @@ class ReactNativeFeatureFlagsAccessor {
   bool enableMicrotasks();
   bool enableSynchronousStateUpdates();
   bool enableUIConsistency();
+  bool fixMappingOfEventPrioritiesBetweenFabricAndReact();
   bool fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak();
   bool forceBatchingMountItemsOnAndroid();
   bool fuseboxEnabledDebug();
@@ -49,6 +50,7 @@ class ReactNativeFeatureFlagsAccessor {
   bool lazyAnimationCallbacks();
   bool preventDoubleTextMeasure();
   bool setAndroidLayoutDirection();
+  bool useImmediateExecutorInAndroidBridgeless();
   bool useModernRuntimeScheduler();
   bool useNativeViewConfigsInBridgelessMode();
   bool useRuntimeShadowNodeReferenceUpdate();
@@ -64,7 +66,7 @@ class ReactNativeFeatureFlagsAccessor {
   std::unique_ptr<ReactNativeFeatureFlagsProvider> currentProvider_;
   bool wasOverridden_;
 
-  std::array<std::atomic<const char*>, 23> accessedFeatureFlags_;
+  std::array<std::atomic<const char*>, 25> accessedFeatureFlags_;
 
   std::atomic<std::optional<bool>> commonTestFlag_;
   std::atomic<std::optional<bool>> allowCollapsableChildren_;
@@ -77,6 +79,7 @@ class ReactNativeFeatureFlagsAccessor {
   std::atomic<std::optional<bool>> enableMicrotasks_;
   std::atomic<std::optional<bool>> enableSynchronousStateUpdates_;
   std::atomic<std::optional<bool>> enableUIConsistency_;
+  std::atomic<std::optional<bool>> fixMappingOfEventPrioritiesBetweenFabricAndReact_;
   std::atomic<std::optional<bool>> fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak_;
   std::atomic<std::optional<bool>> forceBatchingMountItemsOnAndroid_;
   std::atomic<std::optional<bool>> fuseboxEnabledDebug_;
@@ -84,6 +87,7 @@ class ReactNativeFeatureFlagsAccessor {
   std::atomic<std::optional<bool>> lazyAnimationCallbacks_;
   std::atomic<std::optional<bool>> preventDoubleTextMeasure_;
   std::atomic<std::optional<bool>> setAndroidLayoutDirection_;
+  std::atomic<std::optional<bool>> useImmediateExecutorInAndroidBridgeless_;
   std::atomic<std::optional<bool>> useModernRuntimeScheduler_;
   std::atomic<std::optional<bool>> useNativeViewConfigsInBridgelessMode_;
   std::atomic<std::optional<bool>> useRuntimeShadowNodeReferenceUpdate_;

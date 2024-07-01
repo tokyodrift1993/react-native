@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<2a0324c7b8009e906b18db11c5d2beb9>>
+ * @generated SignedSource<<0f6ca616cc516096ec250d61be440952>>
  */
 
 /**
@@ -71,6 +71,10 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
     return false;
   }
 
+  bool fixMappingOfEventPrioritiesBetweenFabricAndReact() override {
+    return false;
+  }
+
   bool fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak() override {
     return false;
   }
@@ -96,6 +100,10 @@ class ReactNativeFeatureFlagsDefaults : public ReactNativeFeatureFlagsProvider {
   }
 
   bool setAndroidLayoutDirection() override {
+    return false;
+  }
+
+  bool useImmediateExecutorInAndroidBridgeless() override {
     return false;
   }
 

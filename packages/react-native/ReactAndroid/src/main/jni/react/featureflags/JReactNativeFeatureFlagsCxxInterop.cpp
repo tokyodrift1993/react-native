@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<43b256d5f58743df52f579dc69721083>>
+ * @generated SignedSource<<88f5b83b8a3d7902eaab333246b59ed3>>
  */
 
 /**
@@ -105,6 +105,12 @@ class ReactNativeFeatureFlagsProviderHolder
     return method(javaProvider_);
   }
 
+  bool fixMappingOfEventPrioritiesBetweenFabricAndReact() override {
+    static const auto method =
+        getReactNativeFeatureFlagsProviderJavaClass()->getMethod<jboolean()>("fixMappingOfEventPrioritiesBetweenFabricAndReact");
+    return method(javaProvider_);
+  }
+
   bool fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak() override {
     static const auto method =
         getReactNativeFeatureFlagsProviderJavaClass()->getMethod<jboolean()>("fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak");
@@ -144,6 +150,12 @@ class ReactNativeFeatureFlagsProviderHolder
   bool setAndroidLayoutDirection() override {
     static const auto method =
         getReactNativeFeatureFlagsProviderJavaClass()->getMethod<jboolean()>("setAndroidLayoutDirection");
+    return method(javaProvider_);
+  }
+
+  bool useImmediateExecutorInAndroidBridgeless() override {
+    static const auto method =
+        getReactNativeFeatureFlagsProviderJavaClass()->getMethod<jboolean()>("useImmediateExecutorInAndroidBridgeless");
     return method(javaProvider_);
   }
 
@@ -236,6 +248,11 @@ bool JReactNativeFeatureFlagsCxxInterop::enableUIConsistency(
   return ReactNativeFeatureFlags::enableUIConsistency();
 }
 
+bool JReactNativeFeatureFlagsCxxInterop::fixMappingOfEventPrioritiesBetweenFabricAndReact(
+    facebook::jni::alias_ref<JReactNativeFeatureFlagsCxxInterop> /*unused*/) {
+  return ReactNativeFeatureFlags::fixMappingOfEventPrioritiesBetweenFabricAndReact();
+}
+
 bool JReactNativeFeatureFlagsCxxInterop::fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak(
     facebook::jni::alias_ref<JReactNativeFeatureFlagsCxxInterop> /*unused*/) {
   return ReactNativeFeatureFlags::fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak();
@@ -269,6 +286,11 @@ bool JReactNativeFeatureFlagsCxxInterop::preventDoubleTextMeasure(
 bool JReactNativeFeatureFlagsCxxInterop::setAndroidLayoutDirection(
     facebook::jni::alias_ref<JReactNativeFeatureFlagsCxxInterop> /*unused*/) {
   return ReactNativeFeatureFlags::setAndroidLayoutDirection();
+}
+
+bool JReactNativeFeatureFlagsCxxInterop::useImmediateExecutorInAndroidBridgeless(
+    facebook::jni::alias_ref<JReactNativeFeatureFlagsCxxInterop> /*unused*/) {
+  return ReactNativeFeatureFlags::useImmediateExecutorInAndroidBridgeless();
 }
 
 bool JReactNativeFeatureFlagsCxxInterop::useModernRuntimeScheduler(
@@ -347,6 +369,9 @@ void JReactNativeFeatureFlagsCxxInterop::registerNatives() {
         "enableUIConsistency",
         JReactNativeFeatureFlagsCxxInterop::enableUIConsistency),
       makeNativeMethod(
+        "fixMappingOfEventPrioritiesBetweenFabricAndReact",
+        JReactNativeFeatureFlagsCxxInterop::fixMappingOfEventPrioritiesBetweenFabricAndReact),
+      makeNativeMethod(
         "fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak",
         JReactNativeFeatureFlagsCxxInterop::fixStoppedSurfaceRemoveDeleteTreeUIFrameCallbackLeak),
       makeNativeMethod(
@@ -367,6 +392,9 @@ void JReactNativeFeatureFlagsCxxInterop::registerNatives() {
       makeNativeMethod(
         "setAndroidLayoutDirection",
         JReactNativeFeatureFlagsCxxInterop::setAndroidLayoutDirection),
+      makeNativeMethod(
+        "useImmediateExecutorInAndroidBridgeless",
+        JReactNativeFeatureFlagsCxxInterop::useImmediateExecutorInAndroidBridgeless),
       makeNativeMethod(
         "useModernRuntimeScheduler",
         JReactNativeFeatureFlagsCxxInterop::useModernRuntimeScheduler),
