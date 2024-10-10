@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<2e4136d39051c4a1ee6289a6ccf02d52>>
+ * @generated SignedSource<<193bb7803261004003d9009b44810c2c>>
  */
 
 /**
@@ -31,15 +31,15 @@ public interface ReactNativeFeatureFlagsProvider {
 
   @DoNotStrip public fun completeReactInstanceCreationOnBgThreadOnAndroid(): Boolean
 
-  @DoNotStrip public fun destroyFabricSurfacesInReactInstanceManager(): Boolean
-
   @DoNotStrip public fun enableAlignItemsBaselineOnFabricIOS(): Boolean
 
-  @DoNotStrip public fun enableAndroidMixBlendModeProp(): Boolean
+  @DoNotStrip public fun enableAndroidLineHeightCentering(): Boolean
 
-  @DoNotStrip public fun enableBackgroundStyleApplicator(): Boolean
+  @DoNotStrip public fun enableBridgelessArchitecture(): Boolean
 
   @DoNotStrip public fun enableCleanTextInputYogaNode(): Boolean
+
+  @DoNotStrip public fun enableDeletionOfUnmountedViews(): Boolean
 
   @DoNotStrip public fun enableEagerRootViewAttachment(): Boolean
 
@@ -47,9 +47,15 @@ public interface ReactNativeFeatureFlagsProvider {
 
   @DoNotStrip public fun enableFabricLogs(): Boolean
 
+  @DoNotStrip public fun enableFabricRenderer(): Boolean
+
   @DoNotStrip public fun enableFabricRendererExclusively(): Boolean
 
   @DoNotStrip public fun enableGranularShadowTreeStateReconciliation(): Boolean
+
+  @DoNotStrip public fun enableIOSViewClipToPaddingBox(): Boolean
+
+  @DoNotStrip public fun enableLayoutAnimationsOnAndroid(): Boolean
 
   @DoNotStrip public fun enableLayoutAnimationsOnIOS(): Boolean
 
@@ -57,11 +63,15 @@ public interface ReactNativeFeatureFlagsProvider {
 
   @DoNotStrip public fun enableMicrotasks(): Boolean
 
+  @DoNotStrip public fun enablePreciseSchedulingForPremountItemsOnAndroid(): Boolean
+
   @DoNotStrip public fun enablePropsUpdateReconciliationAndroid(): Boolean
 
   @DoNotStrip public fun enableReportEventPaintTime(): Boolean
 
   @DoNotStrip public fun enableSynchronousStateUpdates(): Boolean
+
+  @DoNotStrip public fun enableTextPreallocationOptimisation(): Boolean
 
   @DoNotStrip public fun enableUIConsistency(): Boolean
 
@@ -71,11 +81,9 @@ public interface ReactNativeFeatureFlagsProvider {
 
   @DoNotStrip public fun fetchImagesInViewPreallocation(): Boolean
 
-  @DoNotStrip public fun fixIncorrectScrollViewStateUpdateOnAndroid(): Boolean
-
   @DoNotStrip public fun fixMappingOfEventPrioritiesBetweenFabricAndReact(): Boolean
 
-  @DoNotStrip public fun fixMissedFabricStateUpdatesOnAndroid(): Boolean
+  @DoNotStrip public fun fixMountingCoordinatorReportedPendingTransactionsOnAndroid(): Boolean
 
   @DoNotStrip public fun forceBatchingMountItemsOnAndroid(): Boolean
 
@@ -89,6 +97,8 @@ public interface ReactNativeFeatureFlagsProvider {
 
   @DoNotStrip public fun loadVectorDrawablesOnImages(): Boolean
 
+  @DoNotStrip public fun removeNestedCallsToDispatchMountItemsOnAndroid(): Boolean
+
   @DoNotStrip public fun setAndroidLayoutDirection(): Boolean
 
   @DoNotStrip public fun traceTurboModulePromiseRejectionsOnAndroid(): Boolean
@@ -101,15 +111,13 @@ public interface ReactNativeFeatureFlagsProvider {
 
   @DoNotStrip public fun useNativeViewConfigsInBridgelessMode(): Boolean
 
-  @DoNotStrip public fun useNewReactImageViewBackgroundDrawing(): Boolean
-
   @DoNotStrip public fun useOptimisedViewPreallocationOnAndroid(): Boolean
+
+  @DoNotStrip public fun useOptimizedEventBatchingOnAndroid(): Boolean
 
   @DoNotStrip public fun useRuntimeShadowNodeReferenceUpdate(): Boolean
 
-  @DoNotStrip public fun useRuntimeShadowNodeReferenceUpdateOnLayout(): Boolean
-
-  @DoNotStrip public fun useStateAlignmentMechanism(): Boolean
-
   @DoNotStrip public fun useTurboModuleInterop(): Boolean
+
+  @DoNotStrip public fun useTurboModules(): Boolean
 }

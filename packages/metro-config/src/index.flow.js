@@ -11,6 +11,8 @@
 
 import type {ConfigT} from 'metro-config';
 
+export type {MetroConfig} from 'metro-config';
+
 import {getDefaultConfig as getBaseConfig, mergeConfig} from 'metro-config';
 
 const INTERNAL_CALLSITES_REGEX = new RegExp(
@@ -87,6 +89,7 @@ export function getDefaultConfig(projectRoot: string): ConfigT {
       babelTransformerPath: require.resolve(
         '@react-native/metro-babel-transformer',
       ),
+      hermesParser: true,
       getTransformOptions: async () => ({
         transform: {
           experimentalImportSupport: false,

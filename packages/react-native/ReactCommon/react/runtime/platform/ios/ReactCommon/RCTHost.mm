@@ -216,7 +216,7 @@ class RCTHostHostTargetDelegate : public facebook::react::jsinspector_modern::Ho
         });
     __weak RCTHost *weakSelf = self;
     _inspectorPageId = facebook::react::jsinspector_modern::getInspectorInstance().addPage(
-        "React Native Bridgeless (Experimental)",
+        "React Native Bridgeless",
         /* vm */ "",
         [weakSelf](std::unique_ptr<facebook::react::jsinspector_modern::IRemoteConnection> remote)
             -> std::unique_ptr<facebook::react::jsinspector_modern::ILocalConnection> {
@@ -327,6 +327,17 @@ class RCTHostHostTargetDelegate : public facebook::react::jsinspector_modern::Ho
 - (void)instance:(RCTInstance *)instance didInitializeRuntime:(facebook::jsi::Runtime &)runtime
 {
   [self.runtimeDelegate host:self didInitializeRuntime:runtime];
+}
+
+- (void)loadBundleAtURL:(NSURL *)sourceURL
+             onProgress:(RCTSourceLoadProgressBlock)onProgress
+             onComplete:(RCTSourceLoadBlock)loadCallback
+{
+  if ([_hostDelegate respondsToSelector:@selector(loadBundleAtURL:onProgress:onComplete:)]) {
+    [_hostDelegate loadBundleAtURL:sourceURL onProgress:onProgress onComplete:loadCallback];
+  } else {
+    [RCTJavaScriptLoader loadBundleAtURL:sourceURL onProgress:onProgress onComplete:loadCallback];
+  }
 }
 
 #pragma mark - RCTContextContainerHandling

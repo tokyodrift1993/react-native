@@ -74,7 +74,7 @@ RCTSendScrollEventForNativeAnimations_DEPRECATED(UIScrollView *scrollView, NSInt
                                                                  userData:nil
                                                             coalescingKey:coalescingKey];
   NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:scrollEvent, @"event", nil];
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED"
+  [[NSNotificationCenter defaultCenter] postNotificationName:RCTNotifyEventDispatcherObserversOfEvent_DEPRECATED
                                                       object:nil
                                                     userInfo:userInfo];
 }
@@ -552,12 +552,14 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
   if (!_state) {
     return;
   }
+
   auto contentOffset = RCTPointFromCGPoint(_scrollView.contentOffset);
-  _state->updateState([contentOffset](const ScrollViewShadowNode::ConcreteState::Data &data) {
-    auto newData = data;
-    newData.contentOffset = contentOffset;
-    return std::make_shared<const ScrollViewShadowNode::ConcreteState::Data>(newData);
-  });
+  auto data = _state->getData();
+
+  if (contentOffset != data.contentOffset) {
+    data.contentOffset = contentOffset;
+    _state->updateState(std::move(data));
+  }
 }
 
 - (void)prepareForRecycle
@@ -620,9 +622,7 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
       });
     }
   } else {
-    if (!_isUserTriggeredScrolling || CoreFeatures::enableGranularScrollViewStateUpdatesIOS) {
-      [self _updateStateWithContentOffset];
-    }
+    [self _updateStateWithContentOffset];
 
     NSTimeInterval now = CACurrentMediaTime();
     if ((_lastScrollEventDispatchTime == 0) || (now - _lastScrollEventDispatchTime > _scrollEventThrottle)) {
@@ -721,6 +721,29 @@ static inline UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCu
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
   [self _handleFinishedScrolling:scrollView];
+}
+
+- (void)didMoveToWindow
+{
+  [super didMoveToWindow];
+
+  if (!self.window) {
+    // The view is being removed, ensure that the scroll end event is dispatched
+    [self _handleScrollEndIfNeeded];
+  }
+}
+
+- (void)_handleScrollEndIfNeeded
+{
+  if (_scrollView.isDecelerating || !_scrollView.isTracking) {
+    if (!_eventEmitter) {
+      return;
+    }
+    static_cast<const ScrollViewEventEmitter &>(*_eventEmitter).onMomentumScrollEnd([self _scrollViewMetrics]);
+
+    [self _updateStateWithContentOffset];
+    _isUserTriggeredScrolling = NO;
+  }
 }
 
 - (void)_handleFinishedScrolling:(UIScrollView *)scrollView

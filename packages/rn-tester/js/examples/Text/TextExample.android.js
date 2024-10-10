@@ -675,6 +675,21 @@ function NestedExample(props: {}): React.Node {
         <Text style={{color: 'blue'}}>blue color, </Text>
         and red color again
       </Text>
+      <Text style={{opacity: 0.7}}>
+        (opacity
+        <Text>
+          (is inherited
+          <Text style={{opacity: 0.7}}>
+            (and accumulated
+            <Text style={{opacity: 0.5, backgroundColor: '#ffaaaa'}}>
+              (and also applies to the background)
+            </Text>
+            )
+          </Text>
+          )
+        </Text>
+        )
+      </Text>
     </>
   );
 }
@@ -1019,6 +1034,68 @@ function TextBaseLineLayoutExample(props: {}): React.Node {
 }
 
 const examples = [
+  {
+    title: 'Background Color and Border Width',
+    name: 'background-border-width',
+    render(): React.Node {
+      return (
+        <View testID="background-border-width">
+          <Text
+            style={{
+              backgroundColor: '#F000F0',
+              padding: 10,
+            }}>
+            Text with background color only
+          </Text>
+          <Text
+            style={{
+              backgroundColor: '#F000F0',
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 10,
+            }}>
+            Text with background color and uniform borderRadii
+          </Text>
+          <Text
+            style={{
+              backgroundColor: '#F000F0',
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 10,
+              padding: 10,
+              marginTop: 10,
+            }}>
+            Text with background color and non-uniform borders
+          </Text>
+          <Text
+            style={{
+              borderWidth: 1,
+              borderColor: 'red',
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 10,
+              padding: 10,
+              marginTop: 10,
+            }}>
+            Text with borderWidth
+          </Text>
+          <Text
+            style={{
+              backgroundColor: '#00AA00',
+              borderWidth: 2,
+              borderColor: 'blue',
+              borderRadius: 10,
+              padding: 10,
+              marginTop: 10,
+            }}>
+            Text with background AND borderWidth
+          </Text>
+        </View>
+      );
+    },
+  },
   {
     title: 'Dynamic Font Size Adjustment',
     name: 'ajustingFontSize',
@@ -1429,7 +1506,7 @@ const examples = [
             testID="text-box-shadow"
             style={{
               borderRadius: 10,
-              experimental_boxShadow: '0 0 10px red',
+              boxShadow: '0 0 10px red',
             }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
