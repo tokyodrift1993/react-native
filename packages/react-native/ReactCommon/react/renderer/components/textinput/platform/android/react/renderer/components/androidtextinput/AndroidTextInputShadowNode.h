@@ -9,12 +9,11 @@
 
 #include "AndroidTextInputEventEmitter.h"
 #include "AndroidTextInputProps.h"
-#include "AndroidTextInputState.h"
-
-#include <react/renderer/components/view/ConcreteViewShadowNode.h>
-#include <react/utils/ContextContainer.h>
 
 #include <react/renderer/attributedstring/AttributedString.h>
+#include <react/renderer/components/textinput/TextInputState.h>
+#include <react/renderer/components/view/ConcreteViewShadowNode.h>
+#include <react/utils/ContextContainer.h>
 
 namespace facebook::react {
 
@@ -28,7 +27,7 @@ class AndroidTextInputShadowNode final
           AndroidTextInputComponentName,
           AndroidTextInputProps,
           AndroidTextInputEventEmitter,
-          AndroidTextInputState,
+          TextInputState,
           /* usesMapBufferForStateData */ true> {
  public:
   static ShadowNodeTraits BaseTraits() {
@@ -40,8 +39,6 @@ class AndroidTextInputShadowNode final
 
   using ConcreteViewShadowNode::ConcreteViewShadowNode;
 
-  void setContextContainer(ContextContainer* contextContainer);
-
   /*
    * Returns a `AttributedString` which represents text content of the node.
    */
@@ -50,8 +47,8 @@ class AndroidTextInputShadowNode final
 
   /*
    * Associates a shared TextLayoutManager with the node.
-   * `ParagraphShadowNode` uses the manager to measure text content
-   * and construct `ParagraphState` objects.
+   * `TextInputShadowNode` uses the manager to measure text content
+   * and construct `TextInputState` objects.
    */
   void setTextLayoutManager(SharedTextLayoutManager textLayoutManager);
 
@@ -65,8 +62,6 @@ class AndroidTextInputShadowNode final
   Float baseline(const LayoutContext& layoutContext, Size size) const override;
 
  private:
-  ContextContainer* contextContainer_{};
-
   /**
    * Get the most up-to-date attributed string for measurement and State.
    */
@@ -79,12 +74,6 @@ class AndroidTextInputShadowNode final
   void updateStateIfNeeded();
 
   SharedTextLayoutManager textLayoutManager_;
-
-  /*
-   * Cached attributed string that represents the content of the subtree started
-   * from the node.
-   */
-  mutable std::optional<AttributedString> cachedAttributedString_{};
 };
 
 } // namespace facebook::react
