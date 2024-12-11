@@ -70,8 +70,7 @@ class AndroidTextInputComponentDescriptor final
     }
 
     return std::make_shared<AndroidTextInputShadowNode::ConcreteState>(
-        std::make_shared<const AndroidTextInputState>(AndroidTextInputState(
-            0, {}, {}, {}, theme.start, theme.end, theme.top, theme.bottom)),
+        std::make_shared<const TextInputState>(TextInputState({}, {}, {}, 0)),
         family);
   }
 
@@ -80,12 +79,9 @@ class AndroidTextInputComponentDescriptor final
     auto& textInputShadowNode =
         static_cast<AndroidTextInputShadowNode&>(shadowNode);
 
-    // `ParagraphShadowNode` uses `TextLayoutManager` to measure text content
+    // `TextInputShadowNode` uses `TextLayoutManager` to measure text content
     // and communicate text rendering metrics to mounting layer.
     textInputShadowNode.setTextLayoutManager(textLayoutManager_);
-
-    textInputShadowNode.setContextContainer(
-        const_cast<ContextContainer*>(getContextContainer().get()));
 
     int surfaceId = textInputShadowNode.getSurfaceId();
     if (surfaceIdToThemePaddingMap_.find(surfaceId) !=
