@@ -97,7 +97,7 @@ val preparePrefab by
                       // jsiinpsector
                       Pair("../ReactCommon/jsinspector-modern/", "jsinspector-modern/"),
                       // mapbufferjni
-                      Pair("src/main/jni/react/mapbuffer", "react/mapbuffer/"),
+                      Pair("src/main/jni/react/mapbuffer", ""),
                       // turbomodulejsijni
                       Pair("src/main/jni/react/turbomodule", ""),
                       // react_codegen_rncore
@@ -191,7 +191,6 @@ val preparePrefab by
                       Pair("../ReactCommon/callinvoker/", ""),
                       Pair("../ReactCommon/cxxreact/", "cxxreact/"),
                       Pair("../ReactCommon/react/bridging/", "react/bridging/"),
-                      Pair("../ReactCommon/react/config/", "react/config/"),
                       Pair("../ReactCommon/react/nativemodule/core/", ""),
                       Pair("../ReactCommon/react/nativemodule/core/platform/android/", ""),
                       Pair(
@@ -513,6 +512,7 @@ android {
     buildConfigField("boolean", "IS_INTERNAL_BUILD", "false")
     buildConfigField("int", "EXOPACKAGE_FLAGS", "0")
     buildConfigField("boolean", "UNSTABLE_ENABLE_FUSEBOX_RELEASE", "false")
+    buildConfigField("boolean", "ENABLE_PERFETTO", "false")
 
     resValue("integer", "react_native_dev_server_port", reactNativeDevServerPort())
 
@@ -664,6 +664,7 @@ dependencies {
   testImplementation(libs.junit)
   testImplementation(libs.assertj)
   testImplementation(libs.mockito)
+  testImplementation(libs.mockito.kotlin)
   testImplementation(libs.robolectric)
   testImplementation(libs.thoughtworks)
 }

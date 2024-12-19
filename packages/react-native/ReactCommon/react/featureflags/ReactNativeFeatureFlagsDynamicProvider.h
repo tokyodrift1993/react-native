@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<5b91c17d725f3a6a140e9fd4a9849707>>
+ * @generated SignedSource<<5183851785d301eed7757a67209ebef2>>
  */
 
 /**
@@ -79,6 +79,15 @@ class ReactNativeFeatureFlagsDynamicProvider : public ReactNativeFeatureFlagsDef
     }
 
     return ReactNativeFeatureFlagsDefaults::disableMountItemReorderingAndroid();
+  }
+
+  bool enableAccumulatedUpdatesInRawPropsAndroid() override {
+    auto value = values_["enableAccumulatedUpdatesInRawPropsAndroid"];
+    if (!value.isNull()) {
+      return value.getBool();
+    }
+
+    return ReactNativeFeatureFlagsDefaults::enableAccumulatedUpdatesInRawPropsAndroid();
   }
 
   bool enableAlignItemsBaselineOnFabricIOS() override {
@@ -430,6 +439,15 @@ class ReactNativeFeatureFlagsDynamicProvider : public ReactNativeFeatureFlagsDef
     }
 
     return ReactNativeFeatureFlagsDefaults::useOptimizedEventBatchingOnAndroid();
+  }
+
+  bool useRawPropsJsiValue() override {
+    auto value = values_["useRawPropsJsiValue"];
+    if (!value.isNull()) {
+      return value.getBool();
+    }
+
+    return ReactNativeFeatureFlagsDefaults::useRawPropsJsiValue();
   }
 
   bool useRuntimeShadowNodeReferenceUpdate() override {

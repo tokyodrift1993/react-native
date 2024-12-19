@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @generated SignedSource<<9657126869d2fb6edb9074d71c0989ac>>
+ * @generated SignedSource<<4a163a2008d8b4258395784286f6ab18>>
  */
 
 /**
@@ -58,6 +58,11 @@ class ReactNativeFeatureFlags {
    * Prevent FabricMountingManager from reordering mountitems, which may lead to invalid state on the UI thread
    */
   RN_EXPORT static bool disableMountItemReorderingAndroid();
+
+  /**
+   * When enabled, Andoid will accumulate updates in rawProps to reduce the number of mounting instructions for cascading rerenders.
+   */
+  RN_EXPORT static bool enableAccumulatedUpdatesInRawPropsAndroid();
 
   /**
    * Kill-switch to turn off support for aling-items:baseline on Fabric iOS.
@@ -253,6 +258,11 @@ class ReactNativeFeatureFlags {
    * Uses an optimized mechanism for event batching on Android that does not need to wait for a Choreographer frame callback.
    */
   RN_EXPORT static bool useOptimizedEventBatchingOnAndroid();
+
+  /**
+   * Instead of using folly::dynamic as internal representation in RawProps and RawValue, use jsi::Value
+   */
+  RN_EXPORT static bool useRawPropsJsiValue();
 
   /**
    * When enabled, cloning shadow nodes within react native will update the reference held by the current JS fiber tree.

@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import com.facebook.common.logging.FLog;
 import com.facebook.fbreact.specs.NativeNetworkingAndroidSpec;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.GuardedAsyncTask;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
@@ -99,7 +98,7 @@ public final class NetworkingModule extends NativeNetworkingAndroidSpec {
   private final OkHttpClient mClient;
   private final ForwardingCookieHandler mCookieHandler = new ForwardingCookieHandler();
   private final @Nullable String mDefaultUserAgent;
-  private final CookieJarContainer mCookieJarContainer;
+  private final @Nullable CookieJarContainer mCookieJarContainer;
   private final Set<Integer> mRequestIds = new HashSet<>();
   private final List<RequestBodyHandler> mRequestBodyHandlers = new ArrayList<>();
   private final List<UriHandler> mUriHandlers = new ArrayList<>();
@@ -121,7 +120,13 @@ public final class NetworkingModule extends NativeNetworkingAndroidSpec {
       client = clientBuilder.build();
     }
     mClient = client;
-    mCookieJarContainer = (CookieJarContainer) client.cookieJar();
+
+    CookieJar cookieJar = client.cookieJar();
+    if (cookieJar instanceof CookieJarContainer) {
+      mCookieJarContainer = (CookieJarContainer) client.cookieJar();
+    } else {
+      mCookieJarContainer = null;
+    }
     mDefaultUserAgent = defaultUserAgent;
   }
 
@@ -183,7 +188,9 @@ public final class NetworkingModule extends NativeNetworkingAndroidSpec {
 
   @Override
   public void initialize() {
-    mCookieJarContainer.setCookieJar(new JavaNetCookieJar(mCookieHandler));
+    if (mCookieJarContainer != null) {
+      mCookieJarContainer.setCookieJar(new JavaNetCookieJar(mCookieHandler));
+    }
   }
 
   @Override
@@ -192,7 +199,9 @@ public final class NetworkingModule extends NativeNetworkingAndroidSpec {
     cancelAllRequests();
 
     mCookieHandler.destroy();
-    mCookieJarContainer.removeCookieJar();
+    if (mCookieJarContainer != null) {
+      mCookieJarContainer.removeCookieJar();
+    }
 
     mRequestBodyHandlers.clear();
     mResponseHandlers.clear();
@@ -663,14 +672,7 @@ public final class NetworkingModule extends NativeNetworkingAndroidSpec {
   }
 
   private void cancelRequest(final int requestId) {
-    // We have to use AsyncTask since this might trigger a NetworkOnMainThreadException, this is an
-    // open issue on OkHttp: https://github.com/square/okhttp/issues/869
-    new GuardedAsyncTask<Void, Void>(getReactApplicationContext()) {
-      @Override
-      protected void doInBackgroundGuarded(Void... params) {
-        OkHttpCallUtil.cancelTag(mClient, Integer.valueOf(requestId));
-      }
-    }.execute();
+    OkHttpCallUtil.cancelTag(mClient, Integer.valueOf(requestId));
   }
 
   @ReactMethod
