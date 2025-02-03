@@ -9,7 +9,11 @@
  * @oncall react_native
  */
 
-const {PACKAGES_DIR, RN_INTEGRATION_TESTS_RUNNER_DIR} = require('../consts');
+const {
+  PACKAGES_DIR,
+  RN_INTEGRATION_TESTS_RUNNER_DIR,
+  SCRIPTS_DIR,
+} = require('./consts');
 
 let isRegisteredForMonorepo = false;
 
@@ -21,9 +25,12 @@ let isRegisteredForMonorepo = false;
  * paths in "exports"), inside a special `if` condition that will be compiled
  * away on build.
  *
- *   if (!process.env.BUILD_EXCLUDE_BABEL_REGISTER) {
- *     require('../../../scripts/build/babel-register').registerForMonorepo();
- *   }
+ * ```js
+ * // Place in a package entry point
+ * if (!process.env.BUILD_EXCLUDE_BABEL_REGISTER) {
+ *   require('../../../scripts/babel-register').registerForMonorepo();
+ * }
+ * ```
  */
 function registerForMonorepo() {
   if (isRegisteredForMonorepo) {
@@ -36,6 +43,7 @@ function registerForMonorepo() {
   } else {
     require('metro-babel-register')([
       PACKAGES_DIR,
+      SCRIPTS_DIR,
       RN_INTEGRATION_TESTS_RUNNER_DIR,
     ]);
   }
@@ -43,4 +51,19 @@ function registerForMonorepo() {
   isRegisteredForMonorepo = true;
 }
 
-module.exports = {registerForMonorepo};
+/**
+ * Calling this function enables entry points under scripts/ to run from source.
+ *
+ * ```js
+ * // Place in a script entry point
+ * require('../babel-register').registerForScript();
+ * ```
+ */
+function registerForScript() {
+  registerForMonorepo();
+}
+
+module.exports = {
+  registerForMonorepo,
+  registerForScript,
+};

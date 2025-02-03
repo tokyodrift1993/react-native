@@ -283,12 +283,10 @@ class XMLHttpRequest extends EventTarget {
     return this._cachedResponse;
   }
 
-  // exposed for testing
   __didCreateRequest(requestId: number): void {
     this._requestId = requestId;
   }
 
-  // exposed for testing
   __didUploadProgress(
     requestId: number,
     progress: number,
@@ -378,7 +376,6 @@ class XMLHttpRequest extends EventTarget {
     );
   }
 
-  // exposed for testing
   __didCompleteResponse(
     requestId: number,
     error: string,

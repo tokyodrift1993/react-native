@@ -261,12 +261,10 @@ class XMLHttpRequest extends (EventTarget(...XHR_EVENTS): typeof EventTarget) {
     return this._cachedResponse;
   }
 
-  // exposed for testing
   __didCreateRequest(requestId: number): void {
     this._requestId = requestId;
   }
 
-  // exposed for testing
   __didUploadProgress(
     requestId: number,
     progress: number,
