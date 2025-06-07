@@ -6,15 +6,14 @@
  */
 
 #include "RuntimeScheduler_Modern.h"
-#include "SchedulerPriorityUtils.h"
 
+#include <ReactCommon/RuntimeExecutorSyncUIThreadUtils.h>
 #include <cxxreact/TraceSection.h>
 #include <jsinspector-modern/tracing/EventLoopReporter.h>
 #include <react/featureflags/ReactNativeFeatureFlags.h>
 #include <react/renderer/consistency/ScopedShadowTreeRevisionLock.h>
 #include <react/timing/primitives.h>
 #include <react/utils/OnScopeExit.h>
-#include <utility>
 
 namespace facebook::react {
 
@@ -225,6 +224,12 @@ void RuntimeScheduler_Modern::setEventTimingDelegate(
   eventTimingDelegate_ = eventTimingDelegate;
 }
 
+void RuntimeScheduler_Modern::setIntersectionObserverDelegate(
+    RuntimeSchedulerIntersectionObserverDelegate*
+        intersectionObserverDelegate) {
+  intersectionObserverDelegate_ = intersectionObserverDelegate;
+}
+
 #pragma mark - Private
 
 void RuntimeScheduler_Modern::scheduleTask(std::shared_ptr<Task> task) {
@@ -347,8 +352,17 @@ void RuntimeScheduler_Modern::runEventLoopTick(
 void RuntimeScheduler_Modern::updateRendering() {
   TraceSection s("RuntimeScheduler::updateRendering");
 
+  // This is the integration of the Event Timing API in the Event Loop.
+  // See https://w3c.github.io/event-timing/#sec-modifications-HTML
   if (eventTimingDelegate_ != nullptr) {
     eventTimingDelegate_->dispatchPendingEventTimingEntries(
+        surfaceIdsWithPendingRenderingUpdates_);
+  }
+
+  // This is the integration of the Intersection Observer API in the Event Loop.
+  // See
+  if (intersectionObserverDelegate_ != nullptr) {
+    intersectionObserverDelegate_->updateIntersectionObservations(
         surfaceIdsWithPendingRenderingUpdates_);
   }
 
@@ -445,12 +459,10 @@ void RuntimeScheduler_Modern::reportLongTasks(
     return;
   }
 
-  auto checkedDurationMs =
-      longestPeriodWithoutYieldingOpportunity_.toDOMHighResTimeStamp();
-  if (checkedDurationMs >= LONG_TASK_DURATION_THRESHOLD_MS) {
-    auto durationMs = (endTime - startTime).toDOMHighResTimeStamp();
-    auto startTimeMs = startTime.toDOMHighResTimeStamp();
-    reporter->reportLongTask(startTimeMs, durationMs);
+  if (longestPeriodWithoutYieldingOpportunity_ >=
+      LONG_TASK_DURATION_THRESHOLD) {
+    auto duration = endTime - startTime;
+    reporter->reportLongTask(startTime, duration);
   }
 }
 

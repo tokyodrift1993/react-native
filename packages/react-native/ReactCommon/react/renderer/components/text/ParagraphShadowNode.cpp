@@ -58,26 +58,13 @@ ParagraphShadowNode::ParagraphShadowNode(
     const ShadowNode& sourceShadowNode,
     const ShadowNodeFragment& fragment)
     : ConcreteViewShadowNode(sourceShadowNode, fragment) {
-  auto& sourceParagraphShadowNode =
-      static_cast<const ParagraphShadowNode&>(sourceShadowNode);
-  auto& state = getStateData();
-  const auto& sourceContent = sourceParagraphShadowNode.content_;
-
-  if (!fragment.children && !fragment.props &&
-      sourceParagraphShadowNode.getIsLayoutClean() &&
-      (!ReactNativeFeatureFlags::enableFontScaleChangesUpdatingLayout() ||
-       (sourceContent.has_value() &&
-        sourceContent.value()
-                .attributedString.getBaseTextAttributes()
-                .fontSizeMultiplier ==
-            state.attributedString.getBaseTextAttributes()
-                .fontSizeMultiplier))) {
-    // This ParagraphShadowNode was cloned but did not change
-    // in a way that affects its layout. Let's mark it clean
-    // to stop Yoga from traversing it.
-    cleanLayout();
-  }
   initialize();
+}
+
+bool ParagraphShadowNode::shouldNewRevisionDirtyMeasurement(
+    const ShadowNode& /*sourceShadowNode*/,
+    const ShadowNodeFragment& fragment) const {
+  return fragment.props != nullptr;
 }
 
 const Content& ParagraphShadowNode::getContent(
@@ -244,19 +231,6 @@ Size ParagraphShadowNode::measureContent(
   auto content =
       getContentWithMeasuredAttachments(layoutContext, layoutConstraints);
 
-  auto attributedString = content.attributedString;
-  if (attributedString.isEmpty()) {
-    // Note: `zero-width space` is insufficient in some cases (e.g. when we
-    // need to measure the "height" of the font).
-    // TODO T67606511: We will redefine the measurement of empty strings as
-    // part of T67606511
-    auto string = BaseTextShadowNode::getEmptyPlaceholder();
-    auto textAttributes = TextAttributes::defaultTextAttributes();
-    textAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
-    textAttributes.apply(getConcreteProps().textAttributes);
-    attributedString.appendFragment({string, textAttributes, {}});
-  }
-
   TextLayoutContext textLayoutContext{
       .pointScaleFactor = layoutContext.pointScaleFactor,
       .surfaceId = getSurfaceId(),
@@ -267,7 +241,7 @@ Size ParagraphShadowNode::measureContent(
       TextLayoutManagerExtended tme(*textLayoutManager_);
 
       auto preparedLayout = tme.prepareLayout(
-          attributedString,
+          content.attributedString,
           content.paragraphAttributes,
           textLayoutContext,
           layoutConstraints);
@@ -287,7 +261,7 @@ Size ParagraphShadowNode::measureContent(
 
   auto size = textLayoutManager_
                   ->measure(
-                      AttributedStringBox{attributedString},
+                      AttributedStringBox{content.attributedString},
                       content.paragraphAttributes,
                       textLayoutContext,
                       layoutConstraints)
@@ -304,21 +278,8 @@ Float ParagraphShadowNode::baseline(
       LayoutConstraints{size, size, layoutMetrics.layoutDirection};
   auto content =
       getContentWithMeasuredAttachments(layoutContext, layoutConstraints);
-  auto attributedString = content.attributedString;
 
-  if (attributedString.isEmpty()) {
-    // Note: `zero-width space` is insufficient in some cases (e.g. when we
-    // need to measure the "height" of the font).
-    // TODO T67606511: We will redefine the measurement of empty strings as
-    // part of T67606511
-    auto string = BaseTextShadowNode::getEmptyPlaceholder();
-    auto textAttributes = TextAttributes::defaultTextAttributes();
-    textAttributes.fontSizeMultiplier = layoutContext.fontSizeMultiplier;
-    textAttributes.apply(getConcreteProps().textAttributes);
-    attributedString.appendFragment({string, textAttributes, {}});
-  }
-
-  AttributedStringBox attributedStringBox{attributedString};
+  AttributedStringBox attributedStringBox{content.attributedString};
 
   if constexpr (TextLayoutManagerExtended::supportsLineMeasurement()) {
     auto lines =

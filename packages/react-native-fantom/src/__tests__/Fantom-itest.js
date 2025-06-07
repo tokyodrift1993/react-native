@@ -6,7 +6,6 @@
  *
  * @flow strict-local
  * @format
- * @oncall react_native
  */
 
 import '@react-native/fantom/src/setUpDefaultReactNativeEnvironment';
@@ -26,6 +25,8 @@ import ReactNativeElement from 'react-native/src/private/webapis/dom/nodes/React
 function getActualViewportDimensions(root: Root): {
   viewportWidth: number,
   viewportHeight: number,
+  viewportOffsetX: number,
+  viewportOffsetY: number,
 } {
   Fantom.runTask(() => {
     root.render(<View />);
@@ -35,6 +36,8 @@ function getActualViewportDimensions(root: Root): {
   return {
     viewportWidth: rect.width,
     viewportHeight: rect.height,
+    viewportOffsetX: rect.x,
+    viewportOffsetY: rect.y,
   };
 }
 
@@ -302,17 +305,23 @@ describe('Fantom', () => {
       expect(getActualViewportDimensions(rootWithDefaults)).toEqual({
         viewportWidth: 390,
         viewportHeight: 844,
+        viewportOffsetX: 0,
+        viewportOffsetY: 0,
       });
 
       const rootWithCustomWidthAndHeight = Fantom.createRoot({
         viewportWidth: 200,
         viewportHeight: 600,
+        viewportOffsetX: 20,
+        viewportOffsetY: 102,
       });
 
       expect(getActualViewportDimensions(rootWithCustomWidthAndHeight)).toEqual(
         {
           viewportWidth: 200,
           viewportHeight: 600,
+          viewportOffsetX: 20,
+          viewportOffsetY: 102,
         },
       );
     });
@@ -539,7 +548,7 @@ describe('Fantom', () => {
             },
           ],
           props: {
-            foregroundColor: 'rgba(255, 255, 255, 127)',
+            foregroundColor: 'rgba(0, 0, 0, 0)',
           },
           type: 'Paragraph',
         });
