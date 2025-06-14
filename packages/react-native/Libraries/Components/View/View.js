@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
+ * @format
  */
 
 import type {ViewProps} from './ViewPropTypes';
@@ -15,8 +15,6 @@ import TextAncestor from '../../Text/TextAncestor';
 import ViewNativeComponent from './ViewNativeComponent';
 import * as React from 'react';
 import {use} from 'react';
-
-export type Props = ViewProps;
 
 type PropsWithRef = $ReadOnly<{
   ref?: React.RefSetter<React.ElementRef<typeof ViewNativeComponent>>,

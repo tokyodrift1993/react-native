@@ -8,6 +8,7 @@
 #include "RuntimeScheduler_Legacy.h"
 #include "SchedulerPriorityUtils.h"
 
+#include <ReactCommon/RuntimeExecutorSyncUIThreadUtils.h>
 #include <cxxreact/TraceSection.h>
 #include <react/renderer/consistency/ScopedShadowTreeRevisionLock.h>
 #include <utility>
@@ -201,6 +202,12 @@ void RuntimeScheduler_Legacy::setPerformanceEntryReporter(
 
 void RuntimeScheduler_Legacy::setEventTimingDelegate(
     RuntimeSchedulerEventTimingDelegate* /*eventTimingDelegate*/) {
+  // No-op in the legacy scheduler
+}
+
+void RuntimeScheduler_Legacy::setIntersectionObserverDelegate(
+    RuntimeSchedulerIntersectionObserverDelegate*
+    /*intersectionObserverDelegate*/) {
   // No-op in the legacy scheduler
 }
 

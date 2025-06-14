@@ -144,7 +144,7 @@ SharedDebugStringConvertibleList HostPlatformViewProps::getDebugProps() const {
 }
 #endif
 
-#ifdef ANDROID
+#ifdef RN_SERIALIZABLE_STATE
 
 inline static void updateEventProp(
     folly::dynamic& result,
@@ -475,10 +475,10 @@ inline static void updateAccessibilityStateProp(
   if (!oldState.has_value() || newState->checked != oldState->checked) {
     switch (newState->checked) {
       case AccessibilityState::Unchecked:
-        resultState["checked"] = "unchecked";
+        resultState["checked"] = false;
         break;
       case AccessibilityState::Checked:
-        resultState["checked"] = "checked";
+        resultState["checked"] = true;
         break;
       case AccessibilityState::Mixed:
         resultState["checked"] = "mixed";
@@ -537,6 +537,10 @@ static folly::dynamic toDynamic(const EdgeInsets& edgeInsets) {
   edgeInsetsResult["right"] = edgeInsets.right;
   edgeInsetsResult["bottom"] = edgeInsets.bottom;
   return edgeInsetsResult;
+}
+
+ComponentName HostPlatformViewProps::getDiffPropsImplementationTarget() const {
+  return "View";
 }
 
 folly::dynamic HostPlatformViewProps::getDiffProps(

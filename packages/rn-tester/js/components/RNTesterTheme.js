@@ -12,9 +12,10 @@ import type {ColorValue, ImageSource} from 'react-native';
 
 import * as React from 'react';
 import {createContext} from 'react';
+import {use} from 'react';
 import {Appearance} from 'react-native';
 
-export type RNTesterTheme = {
+export type RNTesterTheme = $ReadOnly<{
   LabelColor: ColorValue,
   SecondaryLabelColor: ColorValue,
   TertiaryLabelColor: ColorValue,
@@ -53,7 +54,7 @@ export type RNTesterTheme = {
   NavBarPlaygroundActiveIcon: ImageSource,
   NavBarPlaygroundInactiveIcon: ImageSource,
   ...
-};
+}>;
 
 export const RNTesterLightTheme = {
   LabelColor: '#000000ff',
@@ -141,3 +142,6 @@ export const themes = {light: RNTesterLightTheme, dark: RNTesterDarkTheme};
 export const RNTesterThemeContext: React.Context<RNTesterTheme> = createContext(
   Appearance.getColorScheme() === 'dark' ? themes.dark : themes.light,
 );
+export function useTheme(): RNTesterTheme {
+  return use(RNTesterThemeContext);
+}

@@ -151,6 +151,10 @@ class RuntimeScheduler_Modern final : public RuntimeSchedulerBase {
   void setEventTimingDelegate(
       RuntimeSchedulerEventTimingDelegate* eventTimingDelegate) override;
 
+  void setIntersectionObserverDelegate(
+      RuntimeSchedulerIntersectionObserverDelegate*
+          intersectionObserverDelegate) override;
+
  private:
   std::atomic<uint_fast8_t> syncTaskRequests_{0};
 
@@ -224,11 +228,17 @@ class RuntimeScheduler_Modern final : public RuntimeSchedulerBase {
   std::queue<RuntimeSchedulerRenderingUpdate> pendingRenderingUpdates_;
   std::unordered_set<SurfaceId> surfaceIdsWithPendingRenderingUpdates_;
 
+  // TODO(T227212654) eventTimingDelegate_ is only set once during startup, so
+  // the real fix here would be to delay runEventLoop until
+  // setEventTimingDelegate.
   std::atomic<ShadowTreeRevisionConsistencyManager*>
       shadowTreeRevisionConsistencyManager_{nullptr};
+  std::atomic<RuntimeSchedulerEventTimingDelegate*> eventTimingDelegate_{
+      nullptr};
 
   PerformanceEntryReporter* performanceEntryReporter_{nullptr};
-  RuntimeSchedulerEventTimingDelegate* eventTimingDelegate_{nullptr};
+  RuntimeSchedulerIntersectionObserverDelegate* intersectionObserverDelegate_{
+      nullptr};
 
   RuntimeSchedulerTaskErrorHandler onTaskError_;
 };
